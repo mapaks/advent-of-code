@@ -11,7 +11,7 @@ input.addEventListener('change', function() {
 
     // Part One
     const output = document.querySelector('#output');
-    const mostCalories = getMostCalories(text)
+    const mostCalories = getMostCalories(getCaloriesPerElf(text))
     output.value = mostCalories
 
     // Part Two
@@ -23,24 +23,10 @@ input.addEventListener('change', function() {
 });
 
 // Get most calories from the list of calories
-const getMostCalories = (calorieList) => {
-  const calories = calorieList.split('\n')
-  let mostCalories = 0
-  let individualCalorie = 0
-  
-  calories.forEach(calorie => {
-    if (calorie == '') {  
-      if (individualCalorie > mostCalories) {
-        mostCalories = individualCalorie
-      }
+const getMostCalories = (elfCaloriesList) => {
+  elfCaloriesList.sort((a,b) => b-a)
 
-      individualCalorie = 0
-    } else {
-        individualCalorie += parseInt(calorie)
-    }
-  });
-
-  return mostCalories;
+  return elfCaloriesList[0];
 }
 
 // Get an array of total calories per elf
