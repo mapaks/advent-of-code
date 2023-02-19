@@ -11,11 +11,80 @@ input.addEventListener('change', function() {
 
     // Add code here
     const output = document.querySelector('.output');
-    output.innerHTML = `Total Overlap: ${countOverlap(text)}`
+    output.innerHTML = `Total Overlap (Part 1): ${countOverlap(text)}`
+
+    const outputTwo = document.querySelector('.output-two');
+    outputTwo.innerHTML = `Total Overlap (Part 2): ${countOverlapTwo(text)}`
+    // End add code here
   };
 
   reader.readAsText(file)
 })
+
+const countOverlapTwo = (puzzleInput) => {
+  const bigList = puzzleInput.split('\n')
+  let count = 0
+
+  bigList.forEach(item => {
+    const sections = item.split(',')
+
+    if (sections[0] != '') {
+      let sectionOne = []
+      let sectionTwo = []
+
+      let start = 0
+      let end = 0
+
+      for (let index = 0; index < sections.length; index++) {
+        if (index == 0) {
+          const firstAssignments = sections[index].split('-');
+
+          for (let indexAsgmt = 0; indexAsgmt < firstAssignments.length; indexAsgmt++) {
+            const section = firstAssignments[indexAsgmt];
+            
+            if (indexAsgmt == 0) {
+              start = parseInt(section)
+            } else {
+              end = parseInt(section)
+            }
+          }
+
+          for (let indexSection = start; indexSection <= end; indexSection++) {
+            sectionOne.push(indexSection)
+          }
+        } else {
+          const secondAssignments = sections[index].split('-');
+
+          for (let indexAsgmt = 0; indexAsgmt < secondAssignments.length; indexAsgmt++) {
+            const section = secondAssignments[indexAsgmt];
+            
+            if (indexAsgmt == 0) {
+              start = parseInt(section)
+            } else {
+              end = parseInt(section)
+            }
+          }
+
+          for (let indexSection = start; indexSection <= end; indexSection++) {
+            sectionTwo.push(indexSection)
+          }
+        }
+      }
+
+      if (sectionOne[0] < sectionTwo[0]) {
+        if (!(sectionOne[0] < sectionTwo[0] && sectionOne[sectionOne.length-1] < sectionTwo[0])) {
+          count++
+        }
+      } else {
+        if (!(sectionTwo[0] < sectionOne[0] && sectionTwo[sectionTwo.length-1] < sectionOne[0])) {
+          count++
+        }
+      }
+    }
+  });
+
+  return count
+}
 
 const countOverlap = (puzzleInput) => {
   const bigList = puzzleInput.split('\n')
